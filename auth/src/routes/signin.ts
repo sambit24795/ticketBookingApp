@@ -3,8 +3,7 @@ import { body } from "express-validator";
 import jwt from "jsonwebtoken";
 
 import { User } from "../models/user";
-import { validateRequest } from "../middlewares/request-validation-error";
-import { BadRequestError } from "../errors/bad-request-error";
+import { validateRequest, BadRequestError } from "@samtibook/common/build";
 import { Password } from "../services/password";
 
 const router = express.Router();

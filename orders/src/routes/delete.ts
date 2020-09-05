@@ -6,6 +6,8 @@ import {
   OrderStatus,
 } from "@samtibook/common/build";
 import { Order } from "../models/order";
+import { OrdercancelledPublisher } from "../events/publishers/order-cancelled-publisher";
+import { natsWrapper } from "../nats-wrapper";
 
 const router = express.Router();
 
@@ -26,6 +28,14 @@ router.delete(
 
     order.status = OrderStatus.Cancelled;
     await order.save();
+
+    new OrdercancelledPublisher(natsWrapper.client).publish({
+      id: order.id,
+      version: order.version,
+      ticket: {
+        id: order.ticket.id,
+      },
+    });
 
     res.status(204).send(order);
   }

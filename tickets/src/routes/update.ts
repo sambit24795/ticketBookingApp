@@ -5,6 +5,7 @@ import {
   requireAuth,
   NotAuthorizedError,
   validateRequest,
+  BadRequestError,
 } from "@samtibook/common/build";
 
 import { Ticket } from "../models/ticket";
@@ -32,6 +33,10 @@ router.put(
       throw new NotAuthorizedError();
     }
 
+    if (ticket.orderId) {
+      throw new BadRequestError("Ticket is reserved");
+    }
+
     ticket.set({
       title: req.body.title,
       price: req.body.price,
@@ -43,6 +48,7 @@ router.put(
       title: ticket.title,
       price: ticket.price,
       userId: ticket.userId,
+      version: ticket.version,
     });
 
     res.send(ticket);

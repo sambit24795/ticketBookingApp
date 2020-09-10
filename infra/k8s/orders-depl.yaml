@@ -14,7 +14,6 @@ spec:
     spec:
       containers:
         - name: orders
-          resources:
           image: sambit24795/orders
           env:
             - name: NATS_CLIENT_ID
